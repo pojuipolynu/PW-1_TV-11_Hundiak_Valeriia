@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator PW1</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffe6e6;
+            color: #5c5c5c;
+            text-align: center;
+        }
+        h1 {
+            color: #d85c8a;
+        }
+        button {
+            background-color: #ffb6c1;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #ff8fa3;
+        }
+        div {
+            margin: 20px auto;
+            padding: 20px;
+            width: 35%;
+            height: 70%;
+            background-color: #fff0f5;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin: 10px 0;
+        }
+        input {
+            padding: 8px;
+            border: 1px solid #d85c8a;
+            border-radius: 5px;
+            width: 80%;
+        }
+    </style>
+    <script>
+        let mode = "first";
+        
+        function toggleMode(selectedMode) {
+            mode = selectedMode;
+            document.getElementById("firsttask").style.display = mode === "first" ? "block" : "none";
+            document.getElementById("secondtask").style.display = mode === "second" ? "block" : "none";
+            document.getElementById("results").innerHTML = "";
+        }
+        
+        async function calculate() {
+            const inputs = {
+                carbon: parseFloat(document.getElementById("carbon").value) || parseFloat(document.getElementById("carbon1").value) || 0,
+                hydrogen: parseFloat(document.getElementById("hydrogen").value) || parseFloat(document.getElementById("hydrogen1").value) || 0,
+                sulfur: parseFloat(document.getElementById("sulfur").value) || parseFloat(document.getElementById("sulfur1").value) || 0,
+                oxygen: parseFloat(document.getElementById("oxygen").value) || parseFloat(document.getElementById("oxygen1").value) || 0,
+                moisture: parseFloat(document.getElementById("moisture").value) || parseFloat(document.getElementById("moisture1").value) || 0,
+                ash: parseFloat(document.getElementById("ash").value) || parseFloat(document.getElementById("ash1").value) || 0,
+                venadii: mode === "second" ? (parseFloat(document.getElementById("venadii").value) || 0) : 0,
+                q: mode === "second" ? (parseFloat(document.getElementById("q").value) || 0) : 0,
+            };
+
+            const response = await fetch("/calculate", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(inputs)
+            });
+            
+            const data = await response.json();
+            document.getElementById("results").innerHTML = mode === "first" ? `
+                <p>Coefficient W to D: ${data.coefficientWtoD.toFixed(2)}</p>
+                <p>Coefficient W to C: ${data.coefficientWtoC.toFixed(2)}</p>
+                <p>Heat Working Mass: ${data.heatWorkingMass.toFixed(2)}</p>
+                <p>Heat Dry Mass: ${data.heatDryMass.toFixed(2)}</p>
+            ` : `
+                <p>Heat Combustible Mass: ${data.heatCombustibleMass.toFixed(2)}</p>
+                <p>Working Mass of Carbon: ${data.workingMassCarbon.toFixed(2)}</p>
+                <p>Working Mass of Hydrogen: ${data.workingMassHydrogen.toFixed(2)}</p>
+                <p>Working Mass of Venadii: ${data.workingMassVenadii.toFixed(2)}</p>
+                <p>Working Mass of Oxygen: ${data.workingMassOxygen.toFixed(2)}</p>
+                <p>Working Mass of Sulfur: ${data.workingMassSulfur.toFixed(2)}</p>
+                <p>Working Mass of Ash: ${data.workingMassAsh.toFixed(2)}</p>
+            `;
+        }
+    </script>
+</head>
+<body>
+    <h1>Calculator PW1</h1>
+    <button onclick="toggleMode('first')">First Calculation</button>
+    <button onclick="toggleMode('second')">Second Calculation</button>
+
+    <div id="firsttask">
+        <label>Carbon: <input type="number" id="carbon" step="any"></label><br>
+        <label>Hydrogen: <input type="number" id="hydrogen" step="any"></label><br>
+        <label>Sulfur: <input type="number" id="sulfur" step="any"></label><br>
+        <label>Oxygen: <input type="number" id="oxygen" step="any"></label><br>
+        <label>Moisture: <input type="number" id="moisture" step="any"></label><br>
+        <label>Ash: <input type="number" id="ash" step="any"></label><br>
+    </div>
+
+    <div id="secondtask" style="display: none;">
+        <label>Carbon: <input type="number" id="carbon1" step="any"></label><br>
+        <label>Hydrogen: <input type="number" id="hydrogen1" step="any"></label><br>
+        <label>Sulfur: <input type="number" id="sulfur1" step="any"></label><br>
+        <label>Oxygen: <input type="number" id="oxygen1" step="any"></label><br>
+        <label>Moisture: <input type="number" id="moisture1" step="any"></label><br>
+        <label>Ash: <input type="number" id="ash1" step="any"></label><br>
+        <label>Venadii: <input type="number" id="venadii" step="any"></label><br>
+        <label>Q: <input type="number" id="q" step="any"></label><br>
+    </div>
+
+    <button onclick="calculate()">Calculate</button>
+    <div id="results"></div>
+</body>
+</html>
