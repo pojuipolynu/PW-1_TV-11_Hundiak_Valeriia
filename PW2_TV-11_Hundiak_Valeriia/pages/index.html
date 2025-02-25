@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator PW2</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffe6e6;
+            color: #5c5c5c;
+            text-align: center;
+        }
+        h1 {
+            color: #d85c8a;
+        }
+        button {
+            background-color: #ffb6c1;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #ff8fa3;
+        }
+        div {
+            margin: 20px auto;
+            padding: 20px;
+            width: 35%;
+            height: 70%;
+            background-color: #fff0f5;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin: 10px 0;
+        }
+        input {
+            padding: 8px;
+            border: 1px solid #d85c8a;
+            border-radius: 5px;
+            width: 70%;
+        }
+    </style>
+    <script>
+        
+        async function calculate() {
+            const inputs = {
+                coalWeight: parseFloat(document.getElementById("coalWeight").value) || 0,
+                mazutWeight: parseFloat(document.getElementById("mazutWeight").value) || 0,
+                gasWeight: parseFloat(document.getElementById("gasWeight").value) || 0,
+                qCoal: parseFloat(document.getElementById("qCoal").value) || 0,
+            };
+
+            const response = await fetch("/calculate", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(inputs)
+            });
+            
+            const data = await response.json();
+            document.getElementById("results").innerHTML = 
+             `
+                <p>1. Показник емісії твердих частинок при спалюванні вугілля становитиме: ${data.kCoal.toFixed(2)}</p>
+                <p>2. Валовий викид при спалюванні вугілля становитиме: ${data.eCoal.toFixed(2)}</p>
+                <p>3. Показник емісії твердих частинок при спалюванні мазуту становитиме: ${data.kmazut.toFixed(2)}</p>
+                <p>4. Валовий викид при спалюванні мазуту становитиме: ${data.emazut.toFixed(2)}</p>
+                <p>5. Показник емісії твердих частинок при спалюванні природного газу становитиме: ${data.kGas.toFixed(2)}</p>
+                <p>6. Валовий викид при спалюванні природного газу становитиме: ${data.eGas.toFixed(2)}</p>
+            `;
+        }
+    </script>
+</head>
+<body>
+    <h1>Calculator PW2</h1>
+    <div id="inputs">
+        <label>Маса вугілля: <input type="number" id="coalWeight" step="any"></label><br>
+        <label>Маса Мазуту: <input type="number" id="mazutWeight" step="any"></label><br>
+        <label>Маса газу: <input type="number" id="gasWeight" step="any"></label><br>
+        <label>Q вугілля: <input type="number" id="qCoal" step="any"></label><br>
+    </div>
+
+    <button onclick="calculate()">Calculate</button>
+    <div id="results"></div>
+</body>
+</html>
