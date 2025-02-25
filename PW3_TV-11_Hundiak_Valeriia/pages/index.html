@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator PW2</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffe6e6;
+            color: #5c5c5c;
+            text-align: center;
+        }
+        h1 {
+            color: #d85c8a;
+        }
+        button {
+            background-color: #ffb6c1;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #ff8fa3;
+        }
+        div {
+            margin: 20px auto;
+            padding: 20px;
+            width: 35%;
+            height: 70%;
+            background-color: #fff0f5;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin: 10px 0;
+        }
+        input {
+            padding: 8px;
+            border: 1px solid #d85c8a;
+            border-radius: 5px;
+            width: 70%;
+        }
+    </style>
+    <script>
+        
+        async function calculate() {
+            const inputs = {
+                P: parseFloat(document.getElementById("p").value) || 0,
+                Q1: parseFloat(document.getElementById("q1").value) || 0,
+                Q2: parseFloat(document.getElementById("q2").value) || 0,
+                B: parseFloat(document.getElementById("b").value) || 0,
+            };
+
+            const response = await fetch("/calculate", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(inputs)
+            });
+            
+            const data = await response.json();
+
+            document.getElementById("results").innerHTML = 
+             `
+                <p>Результат для Q1:</p>
+                <p>Прибуток/збиток від енергії: ${data.q1result_1.toFixed(2)}</p>
+                <p>Штраф: ${data.q1result_2.toFixed(2)}</p>
+                <p>Фінальний результат: ${data.q1result_3.toFixed(2)}</p>
+                <p>Результат для Q2:</p>
+                <p>Прибуток/збиток від енергії: ${data.q2result_1.toFixed(2)}</p>
+                <p>Штраф: ${data.q2result_2.toFixed(2)}</p>
+                <p>Фінальний результат: ${data.q2result_3.toFixed(2)}</p>
+            `;
+        }
+    </script>
+</head>
+<body>
+    <h1>Calculator PW2</h1>
+    <div id="inputs">
+        <label>P: <input type="number" id="p" step="any"></label><br>
+        <label>Q1: <input type="number" id="q1" step="any"></label><br>
+        <label>Q2: <input type="number" id="q2" step="any"></label><br>
+        <label>B: <input type="number" id="b" step="any"></label><br>
+    </div>
+
+    <button onclick="calculate()">Calculate</button>
+    <div id="results"></div>
+</body>
+</html>
