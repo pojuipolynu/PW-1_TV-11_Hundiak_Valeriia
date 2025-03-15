@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator 1</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js"></script>
+</head>
+<body>
+
+    <h1>Calculator 1</h1>
+    <div class="container">
+        <label>Частота відмов: <input type="number" id="omega" step="any"></label><br>
+        <label>Середній час відновлення трансформатора напругою 35 кВ: <input type="number" id="tsvalue" step="any"></label><br>
+        <label>Потужність: <input type="number" id="pmvalue" step="any"></label><br>
+        <label>Очікуваний час простою: <input type="number" id="tmvalue" step="any"></label><br>
+        <label>Збитки у разі аварійного переривання: <input type="number" id="zavarvalue" step="any"></label><br>
+        <label>Збитки у разі запланованого переривання: <input type="number" id="zplanvalue" step="any"></label><br>
+        <label>Середній час планового простою: <input type="number" id="kpvalue" step="any"></label><br>
+        <button onclick="calculate_1()">Розрахувати</button>
+        <div id="results_1"></div>
+    </div>
+    <button onclick="location.href='index.html'">Назад до меню</button>
+</body>
+</html>
