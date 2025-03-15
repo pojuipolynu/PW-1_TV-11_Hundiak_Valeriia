@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js"></script>
+</head>
+<body>
+    <h1>Calculator</h1>
+    <div class="container">
+        <label>Коефіцієнт корисної дії: <input type="number" id="efficiency" step="any"></label><br>
+        <label>Коефіцієнт потужності навантаження: <input type="number" id="powerfactor" step="any"></label><br>
+        <label>Напруга навантаження: <input type="number" id="voltage" step="any"></label><br>
+        <label>Кількість ЕП: <input type="number" id="quantity" step="any"></label><br>
+        <label>Номінальна потужність ЕП: <input type="number" id="ph" step="any"></label><br>
+        <label>Коефіцієнт використання: <input type="number" id="kb" step="any"></label><br>
+        <label>Коефіцієнт реактивної потужності: <input type="number" id="tg" step="any"></label><br>
+        <button onclick="calculate_1()">Розрахувати</button>
+        <div id="results_1"></div>
+    </div>
+</body>
+</html>
